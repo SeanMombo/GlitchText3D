@@ -10,6 +10,12 @@ import { Vector2, Vector3 } from 'three';
 import { useLoader } from '@react-three/fiber';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
 import { FrontSide } from 'three';
+import RoundBox from './RoundBox';
+import { Plane } from '@react-three/drei';
+import { Lightformer, Environment, RandomizedLight, AccumulativeShadows } from '@react-three/drei'
+import BoxGrid from '../components/BoxGrid'
+import RoundedCube2 from './RoundedBox2';
+
 const TextComponent = ({ scrollYRef }) => {
     const textRef = useRef();
 
@@ -98,18 +104,54 @@ const R3fCanvas = () => {
     return (
       <div style={{ height: '100vh', width: '100vw', position: 'fixed', top: 0, pointerEvents: 'none' }}>
         {/* Canvas element where the 3D scene will be rendered */}
-        <Canvas >
-          {/* Lights */}
-          <ambientLight intensity={0.5} /> {/* Ambient light */}
-          <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} /> {/* Spot light */}
-  
-          {/* 3D Object */}
-            <TextComponent scrollYRef={scrollY}/>
+      
 
-          {/* OrbitControls for interactive camera */}
-        </Canvas>
+        <Canvas shadows camera={{ position: [0, 0, 5], fov: 75 }}>
+        <ambientLight intensity={0.5} color={'red'}/>
+        <directionalLight
+          position={[5, 5, 5]}
+          castShadow
+          intensity={0.7}
+        />
+        {/* <BoxGrid 
+          rows={3} 
+          cols={2} 
+          spacing={0.5} 
+          boxSize={[1, 1, 1]} 
+        /> */}
+        <RoundedCube2/>
+
+        <OrbitControls/>
+      </Canvas>
       </div>
     );
   };
   
   export default R3fCanvas;
+
+//   <Canvas shadows >
+//   {/* Lights */}
+//   <ambientLight intensity={1} /> {/* Ambient light */}
+//   <spotLight position={[-10, 10, 10]} angle={1.15} penumbra={1} /> Spot light
+//     <pointLight intensity={10} position={[.1,.1,3]} color='red'/>
+//   {/* 3D Object */}
+//   <RoundBox/>
+
+//     {/* <TextComponent scrollYRef={scrollY}/> */}
+//     {/* <Plane scale={[20,20,20]} position={[0,0,-1]} receiveShadow castShadow>
+//         <meshBasicMaterial color={'lightgrey'}></meshBasicMaterial>
+//     </Plane> */}
+//     <AccumulativeShadows 
+//         temporal 
+//         frames={100} 
+//         color="lightblue" 
+//         colorBlend={2} 
+//         opacity={0.7} 
+//         scale={60} 
+//         position={[0, 0, -1]} 
+//         rotation={[0, Math.PI/2, Math.PI/2]}
+//         >
+//         <RandomizedLight amount={8} radius={15} ambient={0.5} intensity={1} position={[-5, 10, -5]} size={20} />
+//     </AccumulativeShadows>
+//   <OrbitControls/>
+// </Canvas>
